@@ -28,7 +28,7 @@ def likeHood(n):
 	res={}
 	#add value to dict
 	for i in range(n,n*6+1):
-		res.update({i:dp[n][i]*1.0/6**n})
+		res.update({i:dp[n][i]*100/6**n})
 	return res
 
 def diceRoll():
