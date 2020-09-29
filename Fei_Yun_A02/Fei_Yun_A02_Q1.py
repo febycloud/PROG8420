@@ -13,7 +13,23 @@ def Dice(num):
 	min=num
 	max=num*6
 	return random.randint(min,max)
-
+#using dyanamic programming to find likehood
+def likeHood(n):
+	#find range to dice and sumtotal
+	dp=[[0 for _ in range(6*n+1)]for _ in range(n+1)]
+	for i in range(1,7):
+		dp[1][i]=1
+	for i in range(2,n+1):
+		for j in range(i,i*6+1):
+			for k in range(1,7):
+				if j>=k+1:
+					#dp formula
+					dp[i][j]+=dp[i-1][j-k]
+	res={}
+	#add value to dict
+	for i in range(n,n*6+1):
+		res.update({i:dp[n][i]*1.0/6**n})
+	return res
 
 def diceRoll():
 	#receiver user input
@@ -43,13 +59,14 @@ def diceRoll():
 	print('the total appear percentage is :')
 	print(count)
 	#calculate likelyhood of dices
-	likehood=7*dice	/2
+	likehood=likeHood(dice)
 	print('likehood value is: ')
 	print(likehood)
 	#calculate percentage error of each total
-	error=[]
+	error={}
 	for i in key:
-		error.append((i-likehood)/likehood)
+		errorp=i-likehood[i]/likehood[i]
+		error.update({i:errorp})
 	print('error percentage is: ')
 	print(error)
 	
