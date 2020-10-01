@@ -28,7 +28,7 @@ def likeHood(n):
 	res={}
 	#add value to dict
 	for i in range(n,n*6+1):
-		res.update({i:dp[n][i]*100/6**n})
+		res.update({i:dp[n][i]*1.00/6**n})
 	return res
 
 def diceRoll():
@@ -56,6 +56,9 @@ def diceRoll():
 	count=Counter(numbers)	
 	#get total appears list
 	key=list(count.keys())
+	errp={}
+	for i in key:
+		errp.update({i:count[i]/int(rolls)}) 
 	print('the total appear percentage is :')
 	print(count)
 	#calculate likelyhood of dices
@@ -65,7 +68,7 @@ def diceRoll():
 	#calculate percentage error of each total
 	error={}
 	for i in key:
-		errorp=i-likehood[i]/likehood[i]
+		errorp=errp[i]-likehood[i]
 		error.update({i:errorp})
 	print('error percentage is: ')
 	print(error)
