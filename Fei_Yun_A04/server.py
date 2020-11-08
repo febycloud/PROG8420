@@ -21,20 +21,24 @@ def handle_client(client):  # Takes client socket as argument.
 	welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
 	client.send(bytes(welcome, "utf8"))
 	#msg = "%s has joined the chat!" % name
-	msg= name+" just connected, now "+str(len(clients)+1)+" member in room"
+	clients[client] = name	
+	msg= name+" just connected, now "+str(len(clients))+" member in room"
+	print(clients)
 	broadcast(bytes(msg, "utf8"))
-	clients[client] = name
+	
 
 	while True:
 		msg = client.recv(BUFSIZ)
 		if msg != bytes("{quit}", "utf8"):
 			timenw=str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+			print(clients)
 			broadcast(msg, timenw+" "+name+": ")
 		else:
 			client.send(bytes("{quit}", "utf8"))
 			client.close()
 			del clients[client]
-			broadcast(bytes("%s has left the chat." % name, "utf8"))
+			print(clients)
+			broadcast(bytes(name+" has left chat, now "+str(len(clients))+" member in room", "utf8"))
 			break
 
 
