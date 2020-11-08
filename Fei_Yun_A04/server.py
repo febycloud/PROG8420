@@ -2,7 +2,7 @@
 """Server for multithreaded (asynchronous) chat application."""
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
-
+from datetime import datetime
 
 def accept_incoming_connections():
 	"""Sets up handling for incoming clients."""
@@ -20,14 +20,16 @@ def handle_client(client):  # Takes client socket as argument.
 	name = client.recv(BUFSIZ).decode("utf8")
 	welcome = 'Welcome %s! If you ever want to quit, type {quit} to exit.' % name
 	client.send(bytes(welcome, "utf8"))
-	msg = "%s has joined the chat!" % name
+	#msg = "%s has joined the chat!" % name
+	msg= name+" just connected, now "+str(len(clients)+1)+" member in room"
 	broadcast(bytes(msg, "utf8"))
 	clients[client] = name
 
 	while True:
 		msg = client.recv(BUFSIZ)
 		if msg != bytes("{quit}", "utf8"):
-			broadcast(msg, name+": ")
+			timenw=str(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+			broadcast(msg, timenw+" "+name+": ")
 		else:
 			client.send(bytes("{quit}", "utf8"))
 			client.close()
