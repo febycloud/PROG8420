@@ -25,7 +25,6 @@ def handle_client(client):  # Takes client socket as argument.
 	msg= name+" just connected, now "+str(len(clients))+" member in room"
 	print(clients)
 	broadcast(bytes(msg, "utf8"))
-	
 
 	while True:
 		msg = client.recv(BUFSIZ)
@@ -56,7 +55,6 @@ HOST = ''
 PORT = 33000
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
-
 SERVER = socket(AF_INET, SOCK_STREAM)
 SERVER.bind(ADDR)
 

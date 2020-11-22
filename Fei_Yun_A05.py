@@ -1,18 +1,15 @@
-#The Course:PROG8420
-#Assignment No:2
-#Create date:2020/09/25
-#Name: Fei Yun
+#PROG8420
+#Assignment05
+#Fei Yun
+#8680643
+#create at 2020/11/18
 
-import math
-import random
-import pandas
-from collections import Counter
 
-#random simulate the dice would be appear
-def Dice(num):
-	min=num
-	max=num*6
-	return random.randint(min,max)
+
+#!/usr/bin/env python3
+
+import numpy as np
+
 #using dyanamic programming to find likehood
 def likeHood(n):
 	#find range to dice and sumtotal
@@ -36,8 +33,8 @@ def diceRoll():
 	strd=input('input number of dice: ')
 	try:
 		dice=int(strd)
-		if dice>16:
-			print('max support 16 dices')
+		if dice>8:
+			print('max support 8 dices')
 	except ValueError:
 		print('invaild value')
 		
@@ -48,32 +45,33 @@ def diceRoll():
 			print('rolls should be over than 1')
 	except ValueError:
 		print('invaild value')
-	numbers=[]
-	#simulate rolls dices
-	for i in range(0,rolls):
-		numbers.append(Dice(dice))	
-	#count total appears
-	count=Counter(numbers)	
-	#get total appears list
-	key=list(count.keys())
+	#use numpy to simulate array
+	result=np.random.randint(1,7,(dice,rolls))
+	print("the simulation result is :")
+	print(result)
+	#sum up arraysvertical axis by numpy
+	numbers=np.sum(result,axis=0)
+	#count frequncy via numpy
+	key,counts=np.unique(numbers,return_counts=True)
+	count=dict(zip(key,counts))
+	#calculate error
 	errp={}
 	for i in key:
 		errp.update({i:count[i]/int(rolls)}) 
 	print('the total appear percentage is :')
 	print(count)
-	print(key)
-	print(count)
-	#calculate likelyhood of dices
 	likehood=likeHood(dice)
 	print('likehood value is: ')
 	print(likehood)
 	#calculate percentage error of each total
 	error={}
+	print(key)
 	for i in key:
 		errorp=errp[i]-likehood[i]
 		error.update({i:errorp})
 	print('error percentage is: ')
 	print(error)
 	
-	#run the module
+
 diceRoll()
+	
